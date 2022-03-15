@@ -27,7 +27,12 @@ public class Jogador {
 
   @Override // a toString já existe para uma classe superior
   public String toString() {
-    return "Jogador [nome=" + nome + ", pontos=" + pontos + "]";
+    return "-----------\n"
+          + "Nome: " 
+          + nome 
+          + "\nPontos:" 
+          + pontos 
+          + "\n-----------";
   }
 
 }
