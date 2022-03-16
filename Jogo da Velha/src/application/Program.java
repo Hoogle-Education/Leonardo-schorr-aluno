@@ -28,70 +28,60 @@ public class Program {
 
     while(jogarDeNovo){
 
-      JogoDaVelha jogo = new JogoDaVelha(dimensao, jogador1, jogador2);
+      JogoDaVelha jogo = new JogoDaVelha( dimensao );
 
       while(!jogo.verificaGanhador()){
 
         int l, c;
+        boolean first = true;
 
-        // fazendo a jogada do jogador 1
-        System.out.println("Jogador 1:");
-        System.out.print("Digite a linha da sua jogada: ");
-        l = input.nextInt();
-        System.out.print("Digite a coluna da sua jogada: ");
-        c = input.nextInt();
-
-        // enquanto a jogada nao for possível, continue tentando outras
-        while( ! jogo.realizaJogada(l, c, "X") ){
-          System.out.println("Jogada inválida!");
+        // entrada a jogada do primeiro jogador
+        do {
+          if(!first) System.out.println("#### Jogáda Inválida! ####");
+          else first = false;
+          System.out.println("----- Jogador 1 -----");
           System.out.print("Digite a linha da sua jogada: ");
           l = input.nextInt();
           System.out.print("Digite a coluna da sua jogada: ");
           c = input.nextInt();
-        }
+        } while( !jogo.realizaJogada(l, c, "X") );
 
         // testando se o jogador 1 já venceu
-        if(jogo.verificaGanhador()){
-          jogador1.setPontos( jogo.jogador1.getPontos() );
-          jogador2.setPontos( jogo.jogador2.getPontos() );
+        if(jogo.verificaGanhador()) continue;
 
-          while( true ){
-            System.out.print("Deseja jogar novamente? (S/N) ");
-            
-            input.nextLine();
-            String option = input.nextLine();
-    
-            if(option.equals("N")){
-              jogarDeNovo = false;
-              break;
-            }else if(option.equals("S")){
-              jogarDeNovo = true;
-              break;
-            }else{
-              System.out.println("Digite uma opção válida!");
-            }
-          }
+        // reseto first
+        first = true;
 
-          continue;
-        }
-
-        // Fazendo a jogada do jogador 2
-        System.out.println("Jogador 2: ");
-        System.out.print("Digite a linha da sua jogada: ");
-        l = input.nextInt();
-        System.out.print("Digite a coluna da sua jogada: ");
-        c = input.nextInt();
-
-        // enquanto a jogada nao for possível, continue tentando outras
-        while( ! jogo.realizaJogada(l, c, "O") ){
-          System.out.println("Jogada inválida!");
+        // entrando a jogada do segundo jogador
+        do {
+          if(!first) System.out.println("#### Jogáda Inválida! ####");
+          else first = false;
+          System.out.println("----- Jogador 2 -----");
           System.out.print("Digite a linha da sua jogada: ");
           l = input.nextInt();
           System.out.print("Digite a coluna da sua jogada: ");
           c = input.nextInt();
-        }
+        }while( !jogo.realizaJogada(l, c, "O") );
+
+        // testando se o jogador 2 já venceu ou deu empate
+        if(jogo.verificaGanhador()) continue;
+        
 
         System.out.println(jogo);
+      }
+
+      if(jogo.getResultado() == "X") {
+        jogador1.setPontos( jogador1.getPontos() + 1 );
+        System.out.println("O jogador 1 venceu!");
+        System.out.println(jogador1);
+      }else if(jogo.getResultado() == "O"){
+        jogador2.setPontos( jogador2.getPontos() + 1 );
+        System.out.println("O jogador 2 venceu!");
+        System.out.println(jogador2);
+      }else{
+        System.out.println("Empatou!");
+        System.out.println(jogador1);        
+        System.out.println(jogador2);
       }
       
       while( true ){
@@ -100,15 +90,11 @@ public class Program {
         input.nextLine();
         String option = input.nextLine();
 
-        if(option.equals("N")){
-          jogarDeNovo = false;
-          break;
-        }else if(option.equals("S")){
-          jogarDeNovo = true;
-          break;
-        }else{
-          System.out.println("Digite uma opção válida!");
-        }
+        if(option.equals("N")) jogarDeNovo = false;
+        else if(option.equals("S")) jogarDeNovo = true;
+        else System.out.println("Digite uma opção válida!");
+        
+        if( option.equals("N") || option.equals("S") ) break;
       }
     }
 
